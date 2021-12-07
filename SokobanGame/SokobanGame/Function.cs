@@ -19,7 +19,7 @@ namespace SokobanGame
 
             Console.WriteLine($"소코반 게임 시작");
 
-            for (int i = 1; i < stages.Count(); ++i)
+            for (int i = 3; i < stages.Count(); ++i)
             {
                 Console.WriteLine($"Stage{i}");
 
@@ -47,7 +47,10 @@ namespace SokobanGame
 
         public static void FunctionRecursive(int[,] data, int[,] rawData, List<List<int>> hallsIndex, bool[] end)
         {
-            List<char> command = new List<char>() { 'w', 'a', 's', 'd', 'q', 'r', 'u', 'U', 'S', 'L' };
+            List<char> command = new List<char>() { 'w', 'a', 's', 'd' };
+            List<string> saveCommand = new List<string>() { "1S", "2S", "3S", "4S", "5S" };
+            List<string> loadCommand = new List<string>() { "1L", "2L", "3L", "4L", "5L" };
+            int turns = 0;
 
             Console.WriteLine("SOKOBAN>");
 
@@ -59,12 +62,18 @@ namespace SokobanGame
                 return;
             }
 
-            if (move == "r")
+            if (saveCommand.Contains(move))
+            {
+
+            }
+
+            if (move[0] == 'r')
             {
                 data = rawData;
             }
             else if (command.Contains(move[0]))
             {
+                ++turns;
                 data = MovingCharacter(data, hallsIndex, move);
             }
             else
@@ -73,6 +82,7 @@ namespace SokobanGame
             }
 
             Print(data);
+            Console.WriteLine(turns);
 
             if (StageClear(data, hallsIndex))
             {
@@ -81,6 +91,63 @@ namespace SokobanGame
             }
 
             FunctionRecursive(data, rawData, hallsIndex, end);
+        }
+
+        public static int[,] SaveAndLoad(int[,] data, string command)
+        {
+            const int SAVE_NUMBER = 5;
+
+            int saveIndex = command[0];
+
+            bool save = false;
+
+            if (command[1] == 'S')
+            {
+                save = true;
+            }
+
+            List<List<List<int>>> savedData = new List<List<List<int>>>(SAVE_NUMBER);
+            for (int i = 0; i < SAVE_NUMBER; ++i)
+            {
+                savedData.Add(new List<List<int>>());
+            }
+
+            var eachSavedData = savedData[saveIndex];
+
+            if (save)
+            {
+                for (int i = 0; i < data.GetLength(0); ++i)
+                {
+                    eachSavedData.Add(new List<int>());
+                    for (int j = 0; j < data.GetLength(1); ++j)
+                    {
+                        eachSavedData[i].Add(data[i, j]);
+                    }
+                }
+            }
+            else
+            {
+                if (eachSavedData == null)
+                {
+                    Console.WriteLine("데이터 없음");
+                    return data;
+                }
+                
+                int[,] loadedData = new int[eachSavedData.Count(), eachSavedData[0].Count()];
+                
+                for(int i = 0; i < eachSavedData.Count(); ++i)
+                {
+                    var eachRowData = eachSavedData[i];
+                    for(int j = 0; j < eachRowData.Count(); ++j)
+                    {
+                        loadedData[i, j] = eachRowData[j];
+                    }
+                }
+
+                return loadedData;
+            }
+
+            return data;
         }
 
 
