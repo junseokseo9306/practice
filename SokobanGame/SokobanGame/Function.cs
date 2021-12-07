@@ -35,7 +35,7 @@ namespace SokobanGame
 
         }
 
-
+        #region LoadingMap
         public static List<string> LoadStages (List<string> stages, string path)
         {
             const char DELIMETER = '=';
@@ -64,9 +64,6 @@ namespace SokobanGame
             int row = mapData.Length;
             int col = mapData[0].Length;
 
-
-            StringBuilder addPadding = new StringBuilder(col);
-
             if(mapData[row - 1].Length != col)
             {
                 mapData[row - 1]= RightLastString(mapData[row - 1], col);
@@ -86,7 +83,54 @@ namespace SokobanGame
             return data;
         }
 
-        public static string RightLastString (string lastRow, int length)
+
+        #endregion
+
+        public static void MovingCharacter(int[,] map, string move)
+        {
+            List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '0', ' ' };
+            List<char> moveCom = new List<char>() { 'w', 'a', 's', 'd', 'q' };
+
+            var pIndex = FindUserIndex(map);
+
+            int y = pIndex[0];
+            int x = pIndex[1];
+
+            int loop = move.Length;
+
+            for (int i = 0; i < loop; ++i)
+            {
+                int moveIndex = moveCom.IndexOf(move[i]);
+
+                if ((move[i] == moveCom[0] || move[i] == moveCom[2]) && map[y - 1 + moveIndex, x] == 4)
+                {
+                    map[y, x] ^= map[y - 1 + moveIndex, x];
+                    map[y - 1 + moveIndex, x] ^= map[y, x];
+                    map[y, x] ^= map[y - 1 + moveIndex, x];
+
+                    y = y - 1 + moveIndex;
+
+                    Print(map);
+                }
+                else if ((move[i] == moveCom[1] || move[i] == moveCom[3]) && map[y, x - 2 + moveIndex] == 4)
+                {
+                    map[y, x] ^= map[y, x - 2 + moveIndex];
+                    map[y, x - 2 + moveIndex] ^= map[y, x];
+                    map[y, x] ^= map[y, x - 2 + moveIndex];
+
+                    x = x - 2 + moveIndex;
+
+                    Print(map);
+                }
+                else
+                {
+                    Print(map);
+                }
+            }
+        }
+        #region Helper
+
+        public static string RightLastString(string lastRow, int length)
         {
             const char PADDING = ' ';
 
@@ -94,13 +138,13 @@ namespace SokobanGame
 
             addPadding.Append(lastRow);
             int loop = length - lastRow.Length;
-            
+
             for (int i = 0; i < loop; ++i)
             {
                 addPadding.Append(PADDING);
             }
             lastRow = addPadding.ToString();
-            
+
             return lastRow;
         }
 
@@ -140,11 +184,7 @@ namespace SokobanGame
 
         }
 
-        public static void MovingCharacter(int[,] map, string move)
-        {
-
-
-        }
+        #endregion 
 
     }
 }
