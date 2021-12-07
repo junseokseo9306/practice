@@ -11,7 +11,6 @@ namespace SokobanGame
         {
             Function.StartGame();
 
-           
         }
     }
 }

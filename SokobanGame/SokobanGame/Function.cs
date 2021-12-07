@@ -17,44 +17,56 @@ namespace SokobanGame
 
             LoadStages(stages, STAGE_FILE_NAME);
 
-            //foreach (var value in stages)
-            //{
-            //    Console.WriteLine(value);
-            //}
-
-            var data = ConvertToData(stages[1]);
-            var hallsindex = FindHallIndex(data);
-
-            for (int i = 0; i < data.GetLength(0); ++i)
+            for (int i = 0; i < stages.Count(); ++i)
             {
-                for (int j = 0; j < data.GetLength(1); ++j)
+                var data = ConvertToData(stages[i]);
+                var hallsindex = FindHallIndex(data);
+
+                Print(data);
+
+                Console.WriteLine($"소코반 게임 시작");
+
+                while (true)
                 {
-                    Console.Write(data[i, j]);
+                    Console.WriteLine("SOKOBAN>");
+
+                    string move = Console.ReadLine();
+
+                    if (move == "q")
+                    {
+                        break;
+                    }
+
+                    data = MovingCharacter(data, hallsindex, move);
+
+                    Print(data);
+
+                    if (StageClear(data, hallsindex))
+                    {
+                        break;
+                    }
                 }
-                Console.WriteLine();
             }
 
         }
 
         #region LoadingMap
-        public static List<string> LoadStages (List<string> stages, string path)
+        public static void LoadStages(List<string> stages, string path)
         {
             const char DELIMETER = '=';
 
             if (!File.Exists(path))
             {
-                return new List<string>();
+                return;
             }
 
             string allStages = File.ReadAllText(path);
             string[] eachStages = allStages.Split(DELIMETER, StringSplitOptions.TrimEntries);
 
             stages.AddRange(eachStages);
-
-            return stages;
         }
 
-        public static int[,] ConvertToData (string stages)
+        public static int[,] ConvertToData(string stages)
         {
             List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ' };
 
@@ -65,9 +77,9 @@ namespace SokobanGame
             int row = mapData.Length;
             int col = mapData[0].Length;
 
-            if(mapData[row - 1].Length != col)
+            if (mapData[row - 1].Length != col)
             {
-                mapData[row - 1]= RightLastString(mapData[row - 1], col);
+                mapData[row - 1] = RightLastString(mapData[row - 1], col);
             }
 
             int[,] data = new int[row, col];
@@ -87,7 +99,8 @@ namespace SokobanGame
 
         #endregion
 
-        public static void MovingCharacterRecursive(int[,] map, List<List<int>> halls, char move)
+        #region MovingFunction
+        public static int[,] MovingCharacter(int[,] map, List<List<int>> halls, string move)
         {
             List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ', '@' };
             List<char> moveCom = new List<char>() { 'w', 'a', 's', 'd', 'q' };
@@ -97,7 +110,7 @@ namespace SokobanGame
             int y = pIndex[0];
             int x = pIndex[1];
 
-            int moveIndex = moveCom.IndexOf(move);
+            int moveIndex = moveCom.IndexOf(move[0]);
             int[,] resultData = new int[map.GetLength(0), map.GetLength(1)];
 
             switch (moveIndex)
@@ -117,13 +130,12 @@ namespace SokobanGame
 
                 default:
                     break;
-
             }
 
-            
+            return resultData;
         }
 
-        public static int[,] MoveUpOrDown (int[,] map, int x, int y, int direction, List<List<int>> halls)
+        public static int[,] MoveUpOrDown(int[,] map, int x, int y, int direction, List<List<int>> halls)
         {
             List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ', '@' };
 
@@ -138,23 +150,23 @@ namespace SokobanGame
             }
 
             //P 위아래 홀일 경우
-            if(map[y + upOrDown, x] == 1)
+            if (map[y + upOrDown, x] == 1)
             {
                 map[y, x] += 2;
                 map[y + upOrDown, x] += 2;
             }
 
             //P 위아래 공 있을 경우 
-            if(map[y + upOrDown, x] == 2)
-            { 
-                if(map[y + nextBall, x] == 5)
+            if (map[y + upOrDown, x] == 2)
+            {
+                if (map[y + nextBall, x] == 5)
                 {
                     map[y, x] += 2;
                     map[y + upOrDown, x] += 1;
                     map[y + nextBall, x] -= 3;
                 }
 
-                if(map[y + nextBall, x] == 1)
+                if (map[y + nextBall, x] == 1)
                 {
                     map[y, x] += 2;
                     map[y + upOrDown, x] += 1;
@@ -163,20 +175,20 @@ namespace SokobanGame
             }
 
             //P 위아래 홀안에 공있는 경우
-            if(map[y + upOrDown, x] == 6)
+            if (map[y + upOrDown, x] == 6)
             {
-                if(map[y + nextBall, x] == 5)
+                if (map[y + nextBall, x] == 5)
                 {
                     map[y, x] += 2;
-                    map[y + upOrDown, x] += 3;
+                    map[y + upOrDown, x] -= 3;
                     map[y + nextBall, x] -= 3;
                 }
             }
 
             //구멍에 빈칸이 있는 경우 다시 복구
-            for(int i = 0; i < halls.Count(); ++i)
+            for (int i = 0; i < halls.Count(); ++i)
             {
-                if(map[halls[i][0], halls[i][1]] == 5)
+                if (map[halls[i][0], halls[i][1]] == 5)
                 {
                     map[halls[i][0], halls[i][1]] = 1;
                 }
@@ -185,28 +197,28 @@ namespace SokobanGame
             return map;
         }
 
-        public static int[,] MoveLeftOrRight (int[,] map, int x, int y, int direction, List<List<int>> halls)
+        public static int[,] MoveLeftOrRight(int[,] map, int x, int y, int direction, List<List<int>> halls)
         {
             List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ', '@' };
 
             int leftOrRIght = direction - 2;
             int nextBall = leftOrRIght * 2;
 
-            //P 위아래 공백일 경우
+            //P 좌우 공백일 경우
             if (map[y, x + leftOrRIght] == 5)
             {
                 map[y, x] += 2;
                 map[y, x + leftOrRIght] -= 2;
             }
 
-            //P 위아래 홀일 경우
+            //P 좌우 홀일 경우
             if (map[y, x + leftOrRIght] == 1)
             {
                 map[y, x] += 2;
                 map[y, x + leftOrRIght] += 2;
             }
 
-            //P 위아래 공 있을 경우 
+            //P 좌우 공 있을 경우 
             if (map[y, x + leftOrRIght] == 2)
             {
                 if (map[y, x + nextBall] == 5)
@@ -224,13 +236,13 @@ namespace SokobanGame
                 }
             }
 
-            //P 위아래 홀안에 공있는 경우
+            //P 좌우 홀안에 공있는 경우
             if (map[y, x + leftOrRIght] == 6)
             {
                 if (map[y, x + nextBall] == 5)
                 {
                     map[y, x] += 2;
-                    map[y, x + leftOrRIght] += 3;
+                    map[y, x + leftOrRIght] -= 3;
                     map[y, x + nextBall] -= 3;
                 }
             }
@@ -246,7 +258,7 @@ namespace SokobanGame
 
             return map;
         }
-
+        #endregion
 
         #region Helper
 
@@ -305,20 +317,21 @@ namespace SokobanGame
 
         }
 
-        public static List<List<int>> FindHallIndex (int[,] stage)
+        public static List<List<int>> FindHallIndex(int[,] stage)
         {
             List<List<int>> halls = new List<List<int>>();
 
+            int index = 0;
             for (int i = 0; i < stage.GetLength(0); ++i)
             {
                 for (int j = 0; j < stage.GetLength(1); ++j)
                 {
-                    int index = 0;
-                    if(stage[i, j] == 1)
+                    if (stage[i, j] == 1)
                     {
                         halls.Add(new List<int>());
                         halls[index].Add(i);
                         halls[index].Add(j);
+                        ++index;
                     }
                 }
                 Console.WriteLine();
@@ -327,6 +340,24 @@ namespace SokobanGame
             return halls;
         }
 
+        public static bool StageClear (int[,] data, List<List<int>> halls)
+        {
+            bool [] finish = new bool[halls.Count()];
+            for(int i =0; i < halls.Count(); ++i)
+            {
+                if(data[halls[i][0], halls[i][1]] == 6)
+                {
+                    finish[i] = true;
+                }
+            }
+
+            if(finish.Contains(false))
+            {
+                return false;
+            }
+
+            return true;
+        }
 
         #endregion 
 
