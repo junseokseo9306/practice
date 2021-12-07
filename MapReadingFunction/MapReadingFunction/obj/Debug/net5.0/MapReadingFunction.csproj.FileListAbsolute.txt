@@ -1,0 +1,16 @@
+C:\Users\Junseok Seo\Documents\practice\MapReadingFunction\MapReadingFunction\bin\Debug\net5.0\MapReadingFunction.exe
+C:\Users\Junseok Seo\Documents\practice\MapReadingFunction\MapReadingFunction\bin\Debug\net5.0\MapReadingFunction.deps.json
+C:\Users\Junseok Seo\Documents\practice\MapReadingFunction\MapReadingFunction\bin\Debug\net5.0\MapReadingFunction.runtimeconfig.json
+C:\Users\Junseok Seo\Documents\practice\MapReadingFunction\MapReadingFunction\bin\Debug\net5.0\MapReadingFunction.runtimeconfig.dev.json
+C:\Users\Junseok Seo\Documents\practice\MapReadingFunction\MapReadingFunction\bin\Debug\net5.0\MapReadingFunction.dll
+C:\Users\Junseok Seo\Documents\practice\MapReadingFunction\MapReadingFunction\bin\Debug\net5.0\ref\MapReadingFunction.dll
+C:\Users\Junseok Seo\Documents\practice\MapReadingFunction\MapReadingFunction\bin\Debug\net5.0\MapReadingFunction.pdb
+C:\Users\Junseok Seo\Documents\practice\MapReadingFunction\MapReadingFunction\obj\Debug\net5.0\MapReadingFunction.csprojAssemblyReference.cache
+C:\Users\Junseok Seo\Documents\practice\MapReadingFunction\MapReadingFunction\obj\Debug\net5.0\MapReadingFunction.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Junseok Seo\Documents\practice\MapReadingFunction\MapReadingFunction\obj\Debug\net5.0\MapReadingFunction.AssemblyInfoInputs.cache
+C:\Users\Junseok Seo\Documents\practice\MapReadingFunction\MapReadingFunction\obj\Debug\net5.0\MapReadingFunction.AssemblyInfo.cs
+C:\Users\Junseok Seo\Documents\practice\MapReadingFunction\MapReadingFunction\obj\Debug\net5.0\MapReadingFunction.csproj.CoreCompileInputs.cache
+C:\Users\Junseok Seo\Documents\practice\MapReadingFunction\MapReadingFunction\obj\Debug\net5.0\MapReadingFunction.dll
+C:\Users\Junseok Seo\Documents\practice\MapReadingFunction\MapReadingFunction\obj\Debug\net5.0\ref\MapReadingFunction.dll
+C:\Users\Junseok Seo\Documents\practice\MapReadingFunction\MapReadingFunction\obj\Debug\net5.0\MapReadingFunction.pdb
+C:\Users\Junseok Seo\Documents\practice\MapReadingFunction\MapReadingFunction\obj\Debug\net5.0\MapReadingFunction.genruntimeconfig.cache
