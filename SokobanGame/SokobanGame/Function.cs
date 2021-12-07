@@ -17,29 +17,39 @@ namespace SokobanGame
 
             LoadStages(stages, STAGE_FILE_NAME);
 
-            for (int i = 3; i < stages.Count(); ++i)
+            Console.WriteLine($"소코반 게임 시작");
+
+            for (int i = 0; i < stages.Count(); ++i)
             {
-                var data = ConvertToData(stages[i]);
+                Console.WriteLine($"Stage{i}");
+
+                var rawData = ConvertToData(stages[i]);
+                int[,] data = new int[rawData.GetLength(0), rawData.GetLength(1)];
+                Array.Copy(rawData, data, rawData.GetLength(0) * rawData.GetLength(1));
+
                 var hallsindex = FindHallIndex(data);
 
                 Print(data);
 
-                Console.WriteLine($"소코반 게임 시작");
-                Console.WriteLine($"Stage{i} 시작");
                 while (true)
                 {
-                    
                     Console.WriteLine("SOKOBAN>");
 
                     string move = Console.ReadLine();
 
                     if (move == "q")
                     {
-                        Console.WriteLine("게임을 종료합니다");
-                        break;
+                        goto EXIT;
                     }
 
-                    data = MovingCharacter(data, hallsindex, move);
+                    if (move == "r")
+                    {
+                        data = rawData;
+                    }
+                    else
+                    {
+                        data = MovingCharacter(data, hallsindex, move);
+                    }
 
                     Print(data);
 
@@ -50,7 +60,30 @@ namespace SokobanGame
                     }
                 }
             }
+
+            EXIT:
+            Console.WriteLine("게임을 종료합니다");
         }
+
+        #region Function
+
+        //public static void FunctionRecursive(int[,] data, )
+        //{
+        //    Console.WriteLine("SOKOBAN>");
+
+        //    string move = Console.ReadLine();
+
+        //    if (move == "q")
+        //    {
+        //        return;
+        //    }
+
+
+        //}
+
+
+        #endregion
+
 
         #region LoadingMap
         public static void LoadStages(List<string> stages, string path)
@@ -79,7 +112,7 @@ namespace SokobanGame
             int row = mapData.Length;
             int col = mapData[1].Length;
 
-            for(int i = 0; i < row; ++i)
+            for (int i = 0; i < row; ++i)
             {
                 if (mapData[i].Length != col)
                 {
@@ -123,13 +156,11 @@ namespace SokobanGame
                 case 0:
                 case 2:
                     resultData = MoveUpOrDown(map, x, y, moveIndex, halls);
-
                     break;
 
                 case 1:
                 case 3:
                     resultData = MoveLeftOrRight(map, x, y, moveIndex, halls);
-
                     break;
 
 
@@ -147,48 +178,93 @@ namespace SokobanGame
             int upOrDown = direction - 1;
             int nextBall = upOrDown * 2;
 
-            //P 위아래 공백일 경우
-            if (map[y + upOrDown, x] == 5)
-            {
-                map[y, x] += 2;
-                map[y + upOrDown, x] -= 2;
-            }
+            int move = map[y + upOrDown, x];
 
-            //P 위아래 홀일 경우
-            if (map[y + upOrDown, x] == 1)
+            switch (move)
             {
-                map[y, x] += 2;
-                map[y + upOrDown, x] += 2;
-            }
+                case 1:
 
-            //P 위아래 공 있을 경우 
-            if (map[y + upOrDown, x] == 2)
-            {
-                if (map[y + nextBall, x] == 5)
-                {
                     map[y, x] += 2;
-                    map[y + upOrDown, x] += 1;
-                    map[y + nextBall, x] -= 3;
-                }
+                    map[y + upOrDown, x] += 2;
+                    break;
 
-                if (map[y + nextBall, x] == 1)
-                {
+                case 2:
+                    if (map[y + nextBall, x] == 5)
+                    {
+                        map[y, x] += 2;
+                        map[y + upOrDown, x] += 1;
+                        map[y + nextBall, x] -= 3;
+                    }
+
+                    if (map[y + nextBall, x] == 1)
+                    {
+                        map[y, x] += 2;
+                        map[y + upOrDown, x] += 1;
+                        map[y + nextBall, x] += 5;
+                    }
+                    break;
+
+                case 5:
                     map[y, x] += 2;
-                    map[y + upOrDown, x] += 1;
-                    map[y + nextBall, x] += 5;
-                }
+                    map[y + upOrDown, x] -= 2;
+                    break;
+
+                case 6:
+                    if (map[y + nextBall, x] == 5)
+                    {
+                        map[y, x] += 2;
+                        map[y + upOrDown, x] -= 3;
+                        map[y + nextBall, x] -= 3;
+                    }
+                    break;
+
+                default:
+                    break;
             }
 
-            //P 위아래 홀안에 공있는 경우
-            if (map[y + upOrDown, x] == 6)
-            {
-                if (map[y + nextBall, x] == 5)
-                {
-                    map[y, x] += 2;
-                    map[y + upOrDown, x] -= 3;
-                    map[y + nextBall, x] -= 3;
-                }
-            }
+
+            ////P 위아래 공백일 경우
+            //if (map[y + upOrDown, x] == 5)
+            //{
+            //    map[y, x] += 2;
+            //    map[y + upOrDown, x] -= 2;
+            //}
+
+            ////P 위아래 홀일 경우
+            //if (map[y + upOrDown, x] == 1)
+            //{
+            //    map[y, x] += 2;
+            //    map[y + upOrDown, x] += 2;
+            //}
+
+            ////P 위아래 공 있을 경우 
+            //if (map[y + upOrDown, x] == 2)
+            //{
+            //    if (map[y + nextBall, x] == 5)
+            //    {
+            //        map[y, x] += 2;
+            //        map[y + upOrDown, x] += 1;
+            //        map[y + nextBall, x] -= 3;
+            //    }
+
+            //    if (map[y + nextBall, x] == 1)
+            //    {
+            //        map[y, x] += 2;
+            //        map[y + upOrDown, x] += 1;
+            //        map[y + nextBall, x] += 5;
+            //    }
+            //}
+
+            ////P 위아래 홀안에 공있는 경우
+            //if (map[y + upOrDown, x] == 6)
+            //{
+            //    if (map[y + nextBall, x] == 5)
+            //    {
+            //        map[y, x] += 2;
+            //        map[y + upOrDown, x] -= 3;
+            //        map[y + nextBall, x] -= 3;
+            //    }
+            //}
 
             //구멍에 빈칸이 있는 경우 다시 복구
             for (int i = 0; i < halls.Count(); ++i)
@@ -345,18 +421,18 @@ namespace SokobanGame
             return halls;
         }
 
-        public static bool StageClear (int[,] data, List<List<int>> halls)
+        public static bool StageClear(int[,] data, List<List<int>> halls)
         {
-            bool [] finish = new bool[halls.Count()];
-            for(int i =0; i < halls.Count(); ++i)
+            bool[] finish = new bool[halls.Count()];
+            for (int i = 0; i < halls.Count(); ++i)
             {
-                if(data[halls[i][0], halls[i][1]] == 6)
+                if (data[halls[i][0], halls[i][1]] == 6)
                 {
                     finish[i] = true;
                 }
             }
 
-            if(finish.Contains(false))
+            if (finish.Contains(false))
             {
                 return false;
             }
