@@ -18,10 +18,11 @@ namespace SokobanGame
             LoadStages(stages, STAGE_FILE_NAME);
 
             Console.WriteLine($"소코반 게임 시작");
+            Console.WriteLine($"----------------");
 
-            for (int i = 3; i < stages.Count(); ++i)
+            for (int i = 3; i < 5; ++i)
             {
-                Console.WriteLine($"Stage{i}");
+                Console.WriteLine($"Stage{i + 1} 시작");
 
                 var rawData = ConvertToData(stages[i]);
                 int[,] data = new int[rawData.GetLength(0), rawData.GetLength(1)];
@@ -32,27 +33,31 @@ namespace SokobanGame
                 Print(data);
 
                 bool[] end = new bool[1];
+                int turns = 0;
 
-                FunctionRecursive(data, rawData, hallsIndex, end);
+                FunctionRecursive(data, rawData, hallsIndex, end, turns);
 
                 if (end[0])
                 {
                     break;
                 }
 
+                if (i == stages.Count - 1)
+                {
+                    Console.WriteLine("축하드립니다 모든 스테이지를 클리어 하셨습니다");
+                }
             }
         }
 
         #region Function
 
-        public static void FunctionRecursive(int[,] data, int[,] rawData, List<List<int>> hallsIndex, bool[] end)
+        public static void FunctionRecursive(int[,] data, int[,] rawData, List<List<int>> hallsIndex, bool[] end, int turns)
         {
             List<char> command = new List<char>() { 'w', 'a', 's', 'd' };
-            List<string> saveCommand = new List<string>() { "1S", "2S", "3S", "4S", "5S" };
-            List<string> loadCommand = new List<string>() { "1L", "2L", "3L", "4L", "5L" };
-            int turns = 0;
+            //List<string> saveCommand = new List<string>() { "1S", "2S", "3S", "4S", "5S" };
+            //List<string> loadCommand = new List<string>() { "1L", "2L", "3L", "4L", "5L" };
 
-            Console.WriteLine("SOKOBAN>");
+            Console.WriteLine($"SOKOBAN>");
 
             string move = Console.ReadLine();
 
@@ -64,7 +69,7 @@ namespace SokobanGame
 
             if (move[0] == 'r')
             {
-                data = rawData;
+                Array.Copy(rawData, data, rawData.GetLength(0) * rawData.GetLength(1));
             }
             else if (command.Contains(move[0]))
             {
@@ -73,19 +78,19 @@ namespace SokobanGame
             }
             else
             {
-                Console.WriteLine("실행할 수 없습니다");
+                Console.WriteLine($"실행할 수 없습니다");
             }
 
             Print(data);
-            Console.WriteLine(turns);
+            Console.WriteLine($"턴수: {turns}");
 
             if (StageClear(data, hallsIndex))
             {
-                Console.WriteLine($"Stage 클리어 하셨습니다");
+                Console.WriteLine($"Stage를 클리어 하셨습니다");
                 return;
             }
 
-            FunctionRecursive(data, rawData, hallsIndex, end);
+            FunctionRecursive(data, rawData, hallsIndex, end, turns);
         }
 
         public static int[,] SaveAndLoad(int[,] data, string command)
@@ -127,13 +132,13 @@ namespace SokobanGame
                     Console.WriteLine("데이터 없음");
                     return data;
                 }
-                
+
                 int[,] loadedData = new int[eachSavedData.Count(), eachSavedData[0].Count()];
-                
-                for(int i = 0; i < eachSavedData.Count(); ++i)
+
+                for (int i = 0; i < eachSavedData.Count(); ++i)
                 {
                     var eachRowData = eachSavedData[i];
-                    for(int j = 0; j < eachRowData.Count(); ++j)
+                    for (int j = 0; j < eachRowData.Count(); ++j)
                     {
                         loadedData[i, j] = eachRowData[j];
                     }
@@ -333,7 +338,7 @@ namespace SokobanGame
                     //P - 2 가 빈공간인 경우
                     if (map[y, x + nextBall] == 5)
                     {
-                        map[y, x] += 2;
+                        map[y, x] += PLAYER_BLANK_OFFSET;
                         map[y, x + leftOrRIght] += PLAYER_BALL_OFFSET;
                         map[y, x + nextBall] -= BALL_BLANK_OFFSET;
                     }
@@ -382,22 +387,22 @@ namespace SokobanGame
 
         #region Helper
 
-        public static string RightLastString(string lastRow, int length)
+        public static string RightLastString(string Row, int length)
         {
             const char PADDING = ' ';
 
             StringBuilder addPadding = new StringBuilder(length);
 
-            addPadding.Append(lastRow);
-            int loop = length - lastRow.Length;
+            addPadding.Append(Row);
+            int loop = length - Row.Length;
 
             for (int i = 0; i < loop; ++i)
             {
                 addPadding.Append(PADDING);
             }
-            lastRow = addPadding.ToString();
+            Row = addPadding.ToString();
 
-            return lastRow;
+            return Row;
         }
 
         public static int[] FindUserIndex(int[,] stage)
