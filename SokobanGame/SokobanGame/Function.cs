@@ -98,18 +98,19 @@ namespace SokobanGame
             int x = pIndex[1];
 
             int moveIndex = moveCom.IndexOf(move);
+            int[,] resultData = new int[map.GetLength(0), map.GetLength(1)];
 
             switch (moveIndex)
             {
                 case 0:
                 case 2:
-
+                    resultData = MoveUpOrDown(map, x, y, moveIndex, halls);
 
                     break;
 
                 case 1:
                 case 3:
-
+                    resultData = MoveLeftOrRight(map, x, y, moveIndex, halls);
 
                     break;
 
@@ -122,7 +123,7 @@ namespace SokobanGame
             
         }
 
-        public static int[,] MoveUpDown (int[,] map, int x, int y, int direction, List<List<int>> halls)
+        public static int[,] MoveUpOrDown (int[,] map, int x, int y, int direction, List<List<int>> halls)
         {
             List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ', '@' };
 
@@ -172,6 +173,7 @@ namespace SokobanGame
                 }
             }
 
+            //구멍에 빈칸이 있는 경우 다시 복구
             for(int i = 0; i < halls.Count(); ++i)
             {
                 if(map[halls[i][0], halls[i][1]] == 5)
@@ -183,13 +185,66 @@ namespace SokobanGame
             return map;
         }
 
-        public static int[,] MoveLeftRight (int[,] map, int x, int y, int direction, List<List<int>> halls)
+        public static int[,] MoveLeftOrRight (int[,] map, int x, int y, int direction, List<List<int>> halls)
         {
+            List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ', '@' };
 
+            int leftOrRIght = direction - 2;
+            int nextBall = leftOrRIght * 2;
 
+            //P 위아래 공백일 경우
+            if (map[y, x + leftOrRIght] == 5)
+            {
+                map[y, x] += 2;
+                map[y, x + leftOrRIght] -= 2;
+            }
 
+            //P 위아래 홀일 경우
+            if (map[y, x + leftOrRIght] == 1)
+            {
+                map[y, x] += 2;
+                map[y, x + leftOrRIght] += 2;
+            }
 
+            //P 위아래 공 있을 경우 
+            if (map[y, x + leftOrRIght] == 2)
+            {
+                if (map[y, x + nextBall] == 5)
+                {
+                    map[y, x] += 2;
+                    map[y, x + leftOrRIght] += 1;
+                    map[y, x + nextBall] -= 3;
+                }
 
+                if (map[y, x + nextBall] == 1)
+                {
+                    map[y, x] += 2;
+                    map[y, x + leftOrRIght] += 1;
+                    map[y, x + nextBall] += 5;
+                }
+            }
+
+            //P 위아래 홀안에 공있는 경우
+            if (map[y, x + leftOrRIght] == 6)
+            {
+                if (map[y, x + nextBall] == 5)
+                {
+                    map[y, x] += 2;
+                    map[y, x + leftOrRIght] += 3;
+                    map[y, x + nextBall] -= 3;
+                }
+            }
+
+            //구멍에 빈칸이 있는 경우 다시 복구
+            for (int i = 0; i < halls.Count(); ++i)
+            {
+                if (map[halls[i][0], halls[i][1]] == 5)
+                {
+                    map[halls[i][0], halls[i][1]] = 1;
+                }
+            }
+
+            return map;
         }
 
 
