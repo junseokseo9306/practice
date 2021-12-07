@@ -17,7 +17,7 @@ namespace SokobanGame
 
             LoadStages(stages, STAGE_FILE_NAME);
 
-            for (int i = 0; i < stages.Count(); ++i)
+            for (int i = 3; i < stages.Count(); ++i)
             {
                 var data = ConvertToData(stages[i]);
                 var hallsindex = FindHallIndex(data);
@@ -25,15 +25,17 @@ namespace SokobanGame
                 Print(data);
 
                 Console.WriteLine($"소코반 게임 시작");
-
+                Console.WriteLine($"Stage{i} 시작");
                 while (true)
                 {
+                    
                     Console.WriteLine("SOKOBAN>");
 
                     string move = Console.ReadLine();
 
                     if (move == "q")
                     {
+                        Console.WriteLine("게임을 종료합니다");
                         break;
                     }
 
@@ -43,11 +45,11 @@ namespace SokobanGame
 
                     if (StageClear(data, hallsindex))
                     {
+                        Console.WriteLine($"Stage{i} 클리어 하셨습니다");
                         break;
                     }
                 }
             }
-
         }
 
         #region LoadingMap
@@ -68,18 +70,21 @@ namespace SokobanGame
 
         public static int[,] ConvertToData(string stages)
         {
-            List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ' };
+            List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ', '@' };
 
             string[] mapDataSplit = stages.Split("\r\n");
             string[] mapData = new string[mapDataSplit.Length - 1];
             Array.Copy(mapDataSplit, 1, mapData, 0, mapData.Length);
 
             int row = mapData.Length;
-            int col = mapData[0].Length;
+            int col = mapData[1].Length;
 
-            if (mapData[row - 1].Length != col)
+            for(int i = 0; i < row; ++i)
             {
-                mapData[row - 1] = RightLastString(mapData[row - 1], col);
+                if (mapData[i].Length != col)
+                {
+                    mapData[i] = RightLastString(mapData[i], col);
+                }
             }
 
             int[,] data = new int[row, col];
@@ -326,7 +331,7 @@ namespace SokobanGame
             {
                 for (int j = 0; j < stage.GetLength(1); ++j)
                 {
-                    if (stage[i, j] == 1)
+                    if (stage[i, j] == 1 || stage[i, j] == 6)
                     {
                         halls.Add(new List<int>());
                         halls[index].Add(i);
