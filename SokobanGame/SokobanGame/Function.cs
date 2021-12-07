@@ -19,7 +19,7 @@ namespace SokobanGame
 
             Console.WriteLine($"소코반 게임 시작");
 
-            for (int i = 1; i < 2; ++i)
+            for (int i = 1; i < stages.Count(); ++i)
             {
                 Console.WriteLine($"Stage{i}");
 
@@ -31,61 +31,23 @@ namespace SokobanGame
 
                 Print(data);
 
-                bool keepContinue = FunctionRecursive(data, rawData, hallsIndex);
+                bool[] end = new bool[1];
 
-                if (keepContinue)
+                FunctionRecursive(data, rawData, hallsIndex, end);
+
+                if (end[0])
                 {
                     break;
                 }
 
-                //    while (true)
-                //    {
-                //        Console.WriteLine("SOKOBAN>");
-
-                //        string move = Console.ReadLine();
-
-                //        if (move == "q")
-                //        {
-                //            goto EXIT;
-                //        }
-
-                //        if (move == "r")
-                //        {
-                //            data = rawData;
-                //        }
-                //        else
-                //        {
-                //            data = MovingCharacter(data, hallsIndex, move);
-                //        }
-
-                //        Print(data);
-
-                //        if (StageClear(data, hallsIndex))
-                //        {
-                //            Console.WriteLine($"Stage{i} 클리어 하셨습니다");
-                //            break;
-                //        }
-                //    }
-                //}
-
-                //EXIT:
-                //Console.WriteLine("게임을 종료합니다");
             }
         }
 
         #region Function
 
-        public static bool FunctionRecursive(int[,] data, int[,] rawData, List<List<int>> hallsIndex)
+        public static void FunctionRecursive(int[,] data, int[,] rawData, List<List<int>> hallsIndex, bool[] end)
         {
-            List<char> command = new List<char>() { 'w', 'a', 's', 'd', 'q', 'r', 'u', 'U' };
-
-            int row = data.GetLength(0);
-            int col = data.GetLength(1);
-
-            //int[,] undo = new int[row, col];
-            //Array.Copy(data, undo, row * col);
-
-            //Print(undo);
+            List<char> command = new List<char>() { 'w', 'a', 's', 'd', 'q', 'r', 'u', 'U', 'S', 'L' };
 
             Console.WriteLine("SOKOBAN>");
 
@@ -93,14 +55,15 @@ namespace SokobanGame
 
             if (move == "q")
             {
-                return true;
+                end[0] = true;
+                return;
             }
 
             if (move == "r")
             {
                 data = rawData;
             }
-            else if(command.Contains(move[0]))
+            else if (command.Contains(move[0]))
             {
                 data = MovingCharacter(data, hallsIndex, move);
             }
@@ -109,28 +72,15 @@ namespace SokobanGame
                 Console.WriteLine("실행할 수 없습니다");
             }
 
-            //int[,] nowData = new int[row, col];
-            //Array.Copy(data, nowData, row * col);
-
-            //if (move == "u")
-            //{
-            //    Array.Copy(undo, data, row * col);
-            //}
-            //else if (move == "U")
-            //{
-            //    Array.Copy(nowData, data, row * col);
-            //}
-
             Print(data);
 
             if (StageClear(data, hallsIndex))
             {
                 Console.WriteLine($"Stage 클리어 하셨습니다");
-                return false;
+                return;
             }
 
-            FunctionRecursive(data, rawData, hallsIndex);
-            return false;
+            FunctionRecursive(data, rawData, hallsIndex, end);
         }
 
 
