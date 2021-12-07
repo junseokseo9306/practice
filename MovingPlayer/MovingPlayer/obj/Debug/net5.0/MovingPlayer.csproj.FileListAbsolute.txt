@@ -1,0 +1,16 @@
+C:\Users\Junseok Seo\Documents\practice\MovingPlayer\MovingPlayer\bin\Debug\net5.0\MovingPlayer.exe
+C:\Users\Junseok Seo\Documents\practice\MovingPlayer\MovingPlayer\bin\Debug\net5.0\MovingPlayer.deps.json
+C:\Users\Junseok Seo\Documents\practice\MovingPlayer\MovingPlayer\bin\Debug\net5.0\MovingPlayer.runtimeconfig.json
+C:\Users\Junseok Seo\Documents\practice\MovingPlayer\MovingPlayer\bin\Debug\net5.0\MovingPlayer.runtimeconfig.dev.json
+C:\Users\Junseok Seo\Documents\practice\MovingPlayer\MovingPlayer\bin\Debug\net5.0\MovingPlayer.dll
+C:\Users\Junseok Seo\Documents\practice\MovingPlayer\MovingPlayer\bin\Debug\net5.0\ref\MovingPlayer.dll
+C:\Users\Junseok Seo\Documents\practice\MovingPlayer\MovingPlayer\bin\Debug\net5.0\MovingPlayer.pdb
+C:\Users\Junseok Seo\Documents\practice\MovingPlayer\MovingPlayer\obj\Debug\net5.0\MovingPlayer.csprojAssemblyReference.cache
+C:\Users\Junseok Seo\Documents\practice\MovingPlayer\MovingPlayer\obj\Debug\net5.0\MovingPlayer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Junseok Seo\Documents\practice\MovingPlayer\MovingPlayer\obj\Debug\net5.0\MovingPlayer.AssemblyInfoInputs.cache
+C:\Users\Junseok Seo\Documents\practice\MovingPlayer\MovingPlayer\obj\Debug\net5.0\MovingPlayer.AssemblyInfo.cs
+C:\Users\Junseok Seo\Documents\practice\MovingPlayer\MovingPlayer\obj\Debug\net5.0\MovingPlayer.csproj.CoreCompileInputs.cache
+C:\Users\Junseok Seo\Documents\practice\MovingPlayer\MovingPlayer\obj\Debug\net5.0\MovingPlayer.dll
+C:\Users\Junseok Seo\Documents\practice\MovingPlayer\MovingPlayer\obj\Debug\net5.0\ref\MovingPlayer.dll
+C:\Users\Junseok Seo\Documents\practice\MovingPlayer\MovingPlayer\obj\Debug\net5.0\MovingPlayer.pdb
+C:\Users\Junseok Seo\Documents\practice\MovingPlayer\MovingPlayer\obj\Debug\net5.0\MovingPlayer.genruntimeconfig.cache

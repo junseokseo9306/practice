@@ -1,0 +1,16 @@
+C:\Users\Junseok Seo\Documents\practice\SokobanGame\SokobanGame\bin\Debug\net5.0\SokobanGame.exe
+C:\Users\Junseok Seo\Documents\practice\SokobanGame\SokobanGame\bin\Debug\net5.0\SokobanGame.deps.json
+C:\Users\Junseok Seo\Documents\practice\SokobanGame\SokobanGame\bin\Debug\net5.0\SokobanGame.runtimeconfig.json
+C:\Users\Junseok Seo\Documents\practice\SokobanGame\SokobanGame\bin\Debug\net5.0\SokobanGame.runtimeconfig.dev.json
+C:\Users\Junseok Seo\Documents\practice\SokobanGame\SokobanGame\bin\Debug\net5.0\SokobanGame.dll
+C:\Users\Junseok Seo\Documents\practice\SokobanGame\SokobanGame\bin\Debug\net5.0\ref\SokobanGame.dll
+C:\Users\Junseok Seo\Documents\practice\SokobanGame\SokobanGame\bin\Debug\net5.0\SokobanGame.pdb
+C:\Users\Junseok Seo\Documents\practice\SokobanGame\SokobanGame\obj\Debug\net5.0\SokobanGame.csprojAssemblyReference.cache
+C:\Users\Junseok Seo\Documents\practice\SokobanGame\SokobanGame\obj\Debug\net5.0\SokobanGame.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Junseok Seo\Documents\practice\SokobanGame\SokobanGame\obj\Debug\net5.0\SokobanGame.AssemblyInfoInputs.cache
+C:\Users\Junseok Seo\Documents\practice\SokobanGame\SokobanGame\obj\Debug\net5.0\SokobanGame.AssemblyInfo.cs
+C:\Users\Junseok Seo\Documents\practice\SokobanGame\SokobanGame\obj\Debug\net5.0\SokobanGame.csproj.CoreCompileInputs.cache
+C:\Users\Junseok Seo\Documents\practice\SokobanGame\SokobanGame\obj\Debug\net5.0\SokobanGame.dll
+C:\Users\Junseok Seo\Documents\practice\SokobanGame\SokobanGame\obj\Debug\net5.0\ref\SokobanGame.dll
+C:\Users\Junseok Seo\Documents\practice\SokobanGame\SokobanGame\obj\Debug\net5.0\SokobanGame.pdb
+C:\Users\Junseok Seo\Documents\practice\SokobanGame\SokobanGame\obj\Debug\net5.0\SokobanGame.genruntimeconfig.cache

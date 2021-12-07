@@ -40,7 +40,6 @@ namespace MovingPlayer
         public static int[,] ReadStage(StreamReader input, StreamWriter output)
         {
             List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ' };
-            List<char> moveCom = new List<char>() { 'w', 'a', 's', 'd', 'q' };
 
             string mapRawData = input.ReadToEnd();
 
@@ -94,10 +93,12 @@ namespace MovingPlayer
                     if (move[i] == moveCom[0])
                     {
                         Console.WriteLine($"{move[i]}: 위로 이동합니다.");
+                        Console.WriteLine();
                     }
                     else
                     {
                         Console.WriteLine($"{move[i]}: 아래로 이동합니다.");
+                        Console.WriteLine();
                     }
                 }
                 else if ((move[i] == moveCom[1] || move[i] == moveCom[3]) && map[y, x - 2 + moveIndex] > 2)
@@ -113,10 +114,12 @@ namespace MovingPlayer
                     if (move[i] == moveCom[1])
                     {
                         Console.WriteLine($"{move[i]}: 왼쪽으로 이동합니다.");
+                        Console.WriteLine();
                     }
                     else
                     {
                         Console.WriteLine($"{move[i]}: 오른쪽으로 이동합니다.");
+                        Console.WriteLine();
                     }
                 }
                 else
@@ -124,6 +127,7 @@ namespace MovingPlayer
                     Print(map);
 
                     Console.WriteLine($"(경고!) 해당명령을 수행할 수 없습니다.");
+                    Console.WriteLine();
                 }
             }
 
