@@ -23,6 +23,7 @@ namespace SokobanGame
             //}
 
             var data = ConvertToData(stages[1]);
+            var hallsindex = FindHallIndex(data);
 
             for (int i = 0; i < data.GetLength(0); ++i)
             {
@@ -86,9 +87,9 @@ namespace SokobanGame
 
         #endregion
 
-        public static void MovingCharacter(int[,] map, string move)
+        public static void MovingCharacterRecursive(int[,] map, List<List<int>> halls, char move)
         {
-            List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '0', ' ' };
+            List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ', '0' };
             List<char> moveCom = new List<char>() { 'w', 'a', 's', 'd', 'q' };
 
             var pIndex = FindUserIndex(map);
@@ -96,38 +97,59 @@ namespace SokobanGame
             int y = pIndex[0];
             int x = pIndex[1];
 
-            int loop = move.Length;
+            int moveIndex = moveCom.IndexOf(move);
 
-            for (int i = 0; i < loop; ++i)
+            switch (moveIndex)
             {
-                int moveIndex = moveCom.IndexOf(move[i]);
+                case 0:
+                case 2:
 
-                if ((move[i] == moveCom[0] || move[i] == moveCom[2]) && map[y - 1 + moveIndex, x] == 4)
-                {
-                    map[y, x] ^= map[y - 1 + moveIndex, x];
-                    map[y - 1 + moveIndex, x] ^= map[y, x];
-                    map[y, x] ^= map[y - 1 + moveIndex, x];
 
-                    y = y - 1 + moveIndex;
+                    break;
 
-                    Print(map);
-                }
-                else if ((move[i] == moveCom[1] || move[i] == moveCom[3]) && map[y, x - 2 + moveIndex] == 4)
-                {
-                    map[y, x] ^= map[y, x - 2 + moveIndex];
-                    map[y, x - 2 + moveIndex] ^= map[y, x];
-                    map[y, x] ^= map[y, x - 2 + moveIndex];
+                case 1:
+                case 3:
 
-                    x = x - 2 + moveIndex;
 
-                    Print(map);
-                }
-                else
-                {
-                    Print(map);
-                }
+                    break;
+
+
+                default:
+                    break;
+
             }
+
+            
         }
+
+        public static int[,] MoveUpDown (int[,] map, int x, int y, int direction, List<List<int>> halls)
+        {
+            List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ', '0' };
+
+            //P 위아래 공백일 경우
+            if (map[y - 1 + direction, x] == 5)
+            {
+                map[y, x] += 2;
+                map[y - 1 + direction, x] -= 2;
+            }
+
+            if(map[y - 1 + direction, x] == 1)
+            {
+
+            }
+
+        }
+
+        public static int[,] MoveLeftRight (int[,] map, int x, int y, int direction, List<List<int>> halls)
+        {
+
+
+
+
+
+        }
+
+
         #region Helper
 
         public static string RightLastString(string lastRow, int length)
@@ -169,9 +191,10 @@ namespace SokobanGame
             return result;
         }
 
+
         public static void Print(int[,] stage)
         {
-            List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ' };
+            List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ', '0' };
 
             for (int i = 0; i < stage.GetLength(0); ++i)
             {
@@ -183,6 +206,29 @@ namespace SokobanGame
             }
 
         }
+
+        public static List<List<int>> FindHallIndex (int[,] stage)
+        {
+            List<List<int>> halls = new List<List<int>>();
+
+            for (int i = 0; i < stage.GetLength(0); ++i)
+            {
+                for (int j = 0; j < stage.GetLength(1); ++j)
+                {
+                    int index = 0;
+                    if(stage[i, j] == 1)
+                    {
+                        halls.Add(new List<int>());
+                        halls[index].Add(i);
+                        halls[index].Add(j);
+                    }
+                }
+                Console.WriteLine();
+            }
+
+            return halls;
+        }
+
 
         #endregion 
 
