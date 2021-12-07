@@ -62,11 +62,6 @@ namespace SokobanGame
                 return;
             }
 
-            if (saveCommand.Contains(move))
-            {
-
-            }
-
             if (move[0] == 'r')
             {
                 data = rawData;
@@ -242,7 +237,11 @@ namespace SokobanGame
 
         public static int[,] MoveUpOrDown(int[,] map, int x, int y, int direction, List<List<int>> halls)
         {
-            List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ', '@' };
+            //List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ', '@' };
+            const int PLAYER_BALL_OFFSET = 1;
+            const int PLAYER_BLANK_OFFSET = 2;
+            const int BALL_BLANK_OFFSET = 3;
+            const int BALL_HALLINBALL_OFFSET = 5;
 
             int upOrDown = direction - 1;
             int nextBall = upOrDown * 2;
@@ -252,38 +251,42 @@ namespace SokobanGame
             switch (move)
             {
                 case 1:
-
-                    map[y, x] += 2;
-                    map[y + upOrDown, x] += 2;
+                    //P 위아래 홀인 경우
+                    map[y, x] += PLAYER_BLANK_OFFSET;
+                    map[y + upOrDown, x] += PLAYER_BLANK_OFFSET;
                     break;
 
                 case 2:
+                    //P 위아래 공 있을 경우
+                    //P - 2 가 빈공간인 경우
                     if (map[y + nextBall, x] == 5)
                     {
-                        map[y, x] += 2;
-                        map[y + upOrDown, x] += 1;
-                        map[y + nextBall, x] -= 3;
+                        map[y, x] += PLAYER_BLANK_OFFSET;
+                        map[y + upOrDown, x] += PLAYER_BALL_OFFSET;
+                        map[y + nextBall, x] -= BALL_BLANK_OFFSET;
                     }
-
+                    //P - 2 가 홀인 경우
                     if (map[y + nextBall, x] == 1)
                     {
-                        map[y, x] += 2;
-                        map[y + upOrDown, x] += 1;
-                        map[y + nextBall, x] += 5;
+                        map[y, x] += PLAYER_BLANK_OFFSET;
+                        map[y + upOrDown, x] += PLAYER_BALL_OFFSET;
+                        map[y + nextBall, x] += BALL_HALLINBALL_OFFSET;
                     }
                     break;
 
                 case 5:
-                    map[y, x] += 2;
-                    map[y + upOrDown, x] -= 2;
+                    // P위아래 빈공간 있을 경우
+                    map[y, x] += PLAYER_BLANK_OFFSET;
+                    map[y + upOrDown, x] -= PLAYER_BLANK_OFFSET;
                     break;
 
                 case 6:
+                    // P위아래 홀안에 공 있는 경우
                     if (map[y + nextBall, x] == 5)
                     {
-                        map[y, x] += 2;
-                        map[y + upOrDown, x] -= 3;
-                        map[y + nextBall, x] -= 3;
+                        map[y, x] += PLAYER_BLANK_OFFSET;
+                        map[y + upOrDown, x] -= BALL_BLANK_OFFSET;
+                        map[y + nextBall, x] -= BALL_BLANK_OFFSET;
                     }
                     break;
 
@@ -296,6 +299,7 @@ namespace SokobanGame
             {
                 if (map[halls[i][0], halls[i][1]] == 5)
                 {
+                    // 숫자 1 은 구멍을 나타냄
                     map[halls[i][0], halls[i][1]] = 1;
                 }
             }
@@ -305,7 +309,11 @@ namespace SokobanGame
 
         public static int[,] MoveLeftOrRight(int[,] map, int x, int y, int direction, List<List<int>> halls)
         {
-            List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ', '@' };
+            //List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ', '@' };
+            const int PLAYER_BALL_OFFSET = 1;
+            const int PLAYER_BLANK_OFFSET = 2;
+            const int BALL_BLANK_OFFSET = 3;
+            const int BALL_HALLINBALL_OFFSET = 5;
 
             int leftOrRIght = direction - 2;
             int nextBall = leftOrRIght * 2;
@@ -315,41 +323,43 @@ namespace SokobanGame
             switch (move)
             {
                 case 1:
-                    //P 좌우 공백일 경우
-                    map[y, x] += 2;
-                    map[y, x + leftOrRIght] += 2;
+                    //P 좌우 홀일 경우
+                    map[y, x] += PLAYER_BLANK_OFFSET;
+                    map[y, x + leftOrRIght] += PLAYER_BLANK_OFFSET;
                     break;
 
                 case 2:
-                    //P 좌우 홀일 경우
+                    //P 좌우 공 있을 경우
+                    //P - 2 가 빈공간인 경우
                     if (map[y, x + nextBall] == 5)
                     {
                         map[y, x] += 2;
-                        map[y, x + leftOrRIght] += 1;
-                        map[y, x + nextBall] -= 3;
+                        map[y, x + leftOrRIght] += PLAYER_BALL_OFFSET;
+                        map[y, x + nextBall] -= BALL_BLANK_OFFSET;
                     }
 
+                    //P - 2 가 홀인 경우
                     if (map[y, x + nextBall] == 1)
                     {
-                        map[y, x] += 2;
-                        map[y, x + leftOrRIght] += 1;
-                        map[y, x + nextBall] += 5;
+                        map[y, x] += PLAYER_BLANK_OFFSET;
+                        map[y, x + leftOrRIght] += PLAYER_BALL_OFFSET;
+                        map[y, x + nextBall] += BALL_HALLINBALL_OFFSET;
                     }
                     break;
 
                 case 5:
-                    //P 좌우 공 있을 경우
-                    map[y, x] += 2;
-                    map[y, x + leftOrRIght] -= 2;
+                    //P 좌우 빈공간 경우
+                    map[y, x] += PLAYER_BLANK_OFFSET;
+                    map[y, x + leftOrRIght] -= PLAYER_BLANK_OFFSET;
                     break;
 
                 case 6:
                     //P 좌우 홀안에 공있는 경우
                     if (map[y, x + nextBall] == 5)
                     {
-                        map[y, x] += 2;
-                        map[y, x + leftOrRIght] -= 3;
-                        map[y, x + nextBall] -= 3;
+                        map[y, x] += PLAYER_BLANK_OFFSET;
+                        map[y, x + leftOrRIght] -= BALL_BLANK_OFFSET;
+                        map[y, x + nextBall] -= BALL_BLANK_OFFSET;
                     }
                     break;
 
