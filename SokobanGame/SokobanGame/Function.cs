@@ -89,7 +89,7 @@ namespace SokobanGame
 
         public static void MovingCharacterRecursive(int[,] map, List<List<int>> halls, char move)
         {
-            List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ', '0' };
+            List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ', '@' };
             List<char> moveCom = new List<char>() { 'w', 'a', 's', 'd', 'q' };
 
             var pIndex = FindUserIndex(map);
@@ -124,20 +124,63 @@ namespace SokobanGame
 
         public static int[,] MoveUpDown (int[,] map, int x, int y, int direction, List<List<int>> halls)
         {
-            List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ', '0' };
+            List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ', '@' };
+
+            int upOrDown = direction - 1;
+            int nextBall = upOrDown * 2;
 
             //P 위아래 공백일 경우
-            if (map[y - 1 + direction, x] == 5)
+            if (map[y + upOrDown, x] == 5)
             {
                 map[y, x] += 2;
-                map[y - 1 + direction, x] -= 2;
+                map[y + upOrDown, x] -= 2;
             }
 
-            if(map[y - 1 + direction, x] == 1)
+            //P 위아래 홀일 경우
+            if(map[y + upOrDown, x] == 1)
             {
-
+                map[y, x] += 2;
+                map[y + upOrDown, x] += 2;
             }
 
+            //P 위아래 공 있을 경우 
+            if(map[y + upOrDown, x] == 2)
+            { 
+                if(map[y + nextBall, x] == 5)
+                {
+                    map[y, x] += 2;
+                    map[y + upOrDown, x] += 1;
+                    map[y + nextBall, x] -= 3;
+                }
+
+                if(map[y + nextBall, x] == 1)
+                {
+                    map[y, x] += 2;
+                    map[y + upOrDown, x] += 1;
+                    map[y + nextBall, x] += 5;
+                }
+            }
+
+            //P 위아래 홀안에 공있는 경우
+            if(map[y + upOrDown, x] == 6)
+            {
+                if(map[y + nextBall, x] == 5)
+                {
+                    map[y, x] += 2;
+                    map[y + upOrDown, x] += 3;
+                    map[y + nextBall, x] -= 3;
+                }
+            }
+
+            for(int i = 0; i < halls.Count(); ++i)
+            {
+                if(map[halls[i][0], halls[i][1]] == 5)
+                {
+                    map[halls[i][0], halls[i][1]] = 1;
+                }
+            }
+
+            return map;
         }
 
         public static int[,] MoveLeftRight (int[,] map, int x, int y, int direction, List<List<int>> halls)
@@ -194,7 +237,7 @@ namespace SokobanGame
 
         public static void Print(int[,] stage)
         {
-            List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ', '0' };
+            List<char> signal = new List<char>() { '#', 'O', 'o', 'P', '=', ' ', '@' };
 
             for (int i = 0; i < stage.GetLength(0); ++i)
             {
